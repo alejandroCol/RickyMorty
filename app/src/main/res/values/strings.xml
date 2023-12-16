@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">RickyMorty</string>
+    <string name="search">Buscar</string>
+    <string name="retry">Intenta de nuevo</string>
+    <string name="network_error_message">Ups, problemas de conexión</string>
+    <string name="searching">Buscando para ti…</string>
+</resources>
