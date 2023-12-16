@@ -52,27 +52,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun CharacterListScreen(navController: NavController) {
-    val viewModel: CharacterViewModel = hiltViewModel()
-    val characters = viewModel.characters.collectAsLazyPagingItems()
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "Rick and Morty Characters") },
-                actions = {
-                    SearchBar(onSearch = viewModel::searchCharacters)
-                },
-            )
-        },
-        content = {
-            CharacterList(charactersList = characters, onCharacterSelected = { character ->
-                navController.navigate("characterDetail/${character.id}")
-            })
-        },
-
-//        poner texo horizontal y añadir colores del api
-
-    )
-}

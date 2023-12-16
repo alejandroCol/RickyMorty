@@ -3,5 +3,10 @@
     <string name="search">Buscar</string>
     <string name="retry">Intenta de nuevo</string>
     <string name="network_error_message">Ups, problemas de conexión</string>
+    <string name="searching_error_message">La busqueda no tuvo resultados</string>
+    <string name="default_error_message">Tuvimos un error</string>
     <string name="searching">Buscando para ti…</string>
+    <string name="status_alive">Vivo</string>
+    <string name="status_dead">Muerto</string>
+    <string name="status_unknown">Desconocido</string>
 </resources>

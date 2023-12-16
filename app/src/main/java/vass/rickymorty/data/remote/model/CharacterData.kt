@@ -4,5 +4,6 @@ data class CharacterData(
     val id: Int?,
     val name: String?,
     val image: String?,
-    val description: String?,
+    val species: String?,
+    val status: String?,
 )

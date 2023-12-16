@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import vass.rickymorty.domain.model.SerieCharacter
 import vass.rickymorty.domain.usecase.GetCharactersUseCase
-import vass.rickymorty.presentation.ui.Option
+import vass.rickymorty.presentation.ui.CharacterStatus
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +23,8 @@ class CharacterViewModel @Inject constructor(
         MutableStateFlow(value = PagingData.empty())
     val characters: MutableStateFlow<PagingData<SerieCharacter>> get() = _characters
 
+    private var searchQuery: String? = ""
+    private var status: CharacterStatus? = null
     init {
         onEvent(HomeEvent.LoadCharacters())
     }
@@ -31,22 +33,24 @@ class CharacterViewModel @Inject constructor(
         viewModelScope.launch {
             when (event) {
                 is HomeEvent.LoadCharacters -> {
-                    loadCharacters(event.search)
+                    loadCharacters()
                 }
             }
         }
     }
 
     fun searchCharacters(search: String?) {
-        onEvent(HomeEvent.LoadCharacters(search))
+        searchQuery = search
+        onEvent(HomeEvent.LoadCharacters())
     }
 
-    fun onFilterSelected(option: Option) {
-       // onEvent(HomeEvent.LoadCharacters(search))
+    fun onFilterSelected(statusSelected: CharacterStatus) {
+        status = statusSelected
+        onEvent(HomeEvent.LoadCharacters())
     }
 
-    private suspend fun loadCharacters(searchTerm: String? = "") {
-        getCharacters.invoke(searchTerm)
+    private suspend fun loadCharacters() {
+        getCharacters.invoke(searchQuery, status)
             .distinctUntilChanged()
             .cachedIn(viewModelScope)
             .collect {
@@ -55,6 +59,6 @@ class CharacterViewModel @Inject constructor(
     }
 
     sealed class HomeEvent {
-        class LoadCharacters(val search: String? = "") : HomeEvent()
+        class LoadCharacters() : HomeEvent()
     }
 }

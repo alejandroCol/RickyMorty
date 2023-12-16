@@ -1,5 +1,6 @@
 package vass.rickymorty.data.remote.api
 
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -10,11 +11,12 @@ interface RickAndMortyApiService {
     @GET("character")
     suspend fun getCharacters(
         @Query("name") searchTerm: String?,
+        @Query("status") status: String?,
         @Query("page") page: Int?,
-    ): CharacterResponseData
+    ): Response<CharacterResponseData>
 
     @GET("character/{id}")
     suspend fun getCharacterDetail(
         @Path("id") characterId: String?,
-    ): CharacterData
+    ): Response<CharacterData>
 }
