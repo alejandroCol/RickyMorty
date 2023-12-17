@@ -1,4 +1,4 @@
-package vass.rickymorty.presentation.ui
+package vass.rickymorty.presentation.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,7 +36,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -56,21 +55,28 @@ import vass.rickymorty.presentation.viewmodel.CharacterViewModel
 @Composable
 fun CharacterListScreen(navController: NavController) {
     Scaffold(
-        topBar = {
-            TopAppBar(
-                backgroundColor = Green,
-                title = { Text(text = "Rick y Morty", color = Color.White) },
+        topBar = { CharacterListTopAppBar() },
+        content = {
+            it
+            CharacterList(
+                onCharacterSelected = { character ->
+                    navigateToCharacterDetail(navController, character.id)
+                },
             )
         },
-        content = {
-            CharacterList(onCharacterSelected = { character ->
-                navController.navigate("characterDetail/${character.id}")
-            })
-        },
-
-//        poner texo horizontal y añadir colores del api
-
     )
+}
+
+@Composable
+fun CharacterListTopAppBar() {
+    TopAppBar(
+        backgroundColor = Green,
+        title = { Text(text = stringResource(id = R.string.app_name), color = Color.White) },
+    )
+}
+
+private fun navigateToCharacterDetail(navController: NavController, characterId: Int?) {
+    navController.navigate("characterDetail/$characterId")
 }
 
 @Composable
@@ -85,14 +91,11 @@ fun CharacterList(
         SearchBar(onSearch = { query ->
             charactersList.refresh()
             viewModel.searchCharacters(query)
-            // Después de la búsqueda, llama a refresh en LazyPagingItems
-            // para actualizar la lista
-            // Por ejemplo:
         }, onClear = {
             charactersList.refresh()
             viewModel.searchCharacters("")
         })
-        // Agrega la fila de opciones seleccionables en la parte superior
+
         OptionsRow(charactersList)
 
         when (loadingState) {
@@ -102,7 +105,7 @@ fun CharacterList(
 
             is LoadState.Error -> {
                 val error = charactersList.loadState.refresh as LoadState.Error
-                ErrorMessage(
+                ErrorScreen(
                     message = error.error.message
                         ?: stringResource(id = R.string.default_error_message),
                     onClickRetry = { charactersList.retry() },
@@ -130,7 +133,7 @@ fun CharacterList(
                                 item {
                                     ErrorMessage(
                                         message = stringResource(id = R.string.network_error_message),
-                                        onClickRetry = { retry() }
+                                        onClickRetry = { retry() },
                                     )
                                 }
                             }
@@ -185,28 +188,25 @@ fun CharacterItem(
                     modifier = Modifier.fillMaxWidth(),
                 )
 
-                // Row para mostrar el estado con un icono redondo
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    val statusColor = when (character.status.toLowerCase()) {
-                        CharacterStatus.alive.name -> Color.Green
-                        CharacterStatus.dead.name -> Color.Red
-                        CharacterStatus.unknown.name -> Color.Gray
+                    val statusColor = when (character.status.lowercase()) {
+                        CharacterStatus.ALIVE.name.lowercase() -> Color.Green
+                        CharacterStatus.DEAD.name.lowercase() -> Color.Red
+                        CharacterStatus.UNKNOWN.name.lowercase() -> Color.Gray
                         else -> Color.Gray
                     }
 
-                    // Icono redondo con el color del estado
                     Box(
                         modifier = Modifier
                             .size(12.dp)
                             .background(shape = CircleShape, color = statusColor),
                     )
 
-                    // Texto del estado
                     Text(
                         text = character.status,
                         color = Color.Gray,
@@ -227,29 +227,29 @@ fun OptionsRow(charactersList: LazyPagingItems<SerieCharacter>) {
         Row(Modifier.weight(30f)) {
             FilterBox(
                 text = stringResource(id = R.string.status_alive),
-                isSelected = selectedOption == CharacterStatus.alive,
+                isSelected = selectedOption == CharacterStatus.ALIVE,
                 onClick = {
-                    selectedOption = CharacterStatus.alive
+                    selectedOption = CharacterStatus.ALIVE
                     charactersList.refresh()
-                    viewModel.onFilterSelected(CharacterStatus.alive)
+                    viewModel.onFilterSelected(CharacterStatus.ALIVE)
                 },
             )
             FilterBox(
                 text = stringResource(id = R.string.status_dead),
-                isSelected = selectedOption == CharacterStatus.dead,
+                isSelected = selectedOption == CharacterStatus.DEAD,
                 onClick = {
-                    selectedOption = CharacterStatus.dead
+                    selectedOption = CharacterStatus.DEAD
                     charactersList.refresh()
-                    viewModel.onFilterSelected(CharacterStatus.dead)
+                    viewModel.onFilterSelected(CharacterStatus.DEAD)
                 },
             )
             FilterBox(
                 text = stringResource(id = R.string.status_unknown),
-                isSelected = selectedOption == CharacterStatus.unknown,
+                isSelected = selectedOption == CharacterStatus.UNKNOWN,
                 onClick = {
-                    selectedOption = CharacterStatus.unknown
+                    selectedOption = CharacterStatus.UNKNOWN
                     charactersList.refresh()
-                    viewModel.onFilterSelected(CharacterStatus.unknown)
+                    viewModel.onFilterSelected(CharacterStatus.UNKNOWN)
                 },
             )
         }
@@ -277,7 +277,7 @@ fun FilterBox(text: String, isSelected: Boolean, onClick: () -> Unit) {
                 color = backgroundColor,
                 shape = RoundedCornerShape(10.dp),
             )
-            .clickable { onClick() }, // Ejecuta la acción al hacer clic,
+            .clickable { onClick() },
         contentAlignment = Alignment.Center,
     ) {
         Text(
@@ -297,7 +297,7 @@ fun BoxWithLayout(content: @Composable RowScope.() -> Unit) {
 }
 
 enum class CharacterStatus {
-    alive,
-    dead,
-    unknown,
+    ALIVE,
+    DEAD,
+    UNKNOWN,
 }

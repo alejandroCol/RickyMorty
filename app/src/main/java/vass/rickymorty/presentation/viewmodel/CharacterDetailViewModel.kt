@@ -6,8 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import vass.rickymorty.domain.repository.ResultRM
 import vass.rickymorty.domain.usecase.GetCharacterDetailUseCase
+import vass.rickymorty.presentation.viewmodel.states.CharacterDetailScreenState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,19 +16,19 @@ class CharacterDetailViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    private val _characterDetailState = MutableStateFlow<CharacterDetailScreenState>(CharacterDetailScreenState.Loading)
+    private val _characterDetailState =
+        MutableStateFlow<CharacterDetailScreenState>(CharacterDetailScreenState.Loading)
     val characterDetailState = _characterDetailState.asStateFlow()
 
     fun getCharacter(characterId: String?) {
         viewModelScope.launch {
             _characterDetailState.value = CharacterDetailScreenState.Loading
-            when (val result = getCharacterDetail.invoke(characterId)) {
-                is ResultRM.Success -> {
-                    _characterDetailState.value = CharacterDetailScreenState.Success(result.data)
-                }
-                is ResultRM.Error -> {
-                    _characterDetailState.value = CharacterDetailScreenState.Error(result.message)
-                }
+
+            val result = getCharacterDetail.invoke(characterId)
+            if (result.isSuccess()) {
+                _characterDetailState.value = CharacterDetailScreenState.Success(result.data)
+            } else {
+                _characterDetailState.value = CharacterDetailScreenState.Error(result.error)
             }
         }
     }

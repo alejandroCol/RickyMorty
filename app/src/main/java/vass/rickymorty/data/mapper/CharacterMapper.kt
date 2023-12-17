@@ -13,14 +13,6 @@ fun CharacterData.mapDtoToDomain(): SerieCharacter = SerieCharacter(
     status ?: ""
 )
 
-fun SerieCharacter.mapDomainToDto(): CharacterData = CharacterData(
-    id,
-    name,
-    image,
-    species,
-    status
-)
-
 fun CharacterResponseData.mapDtoToDomain(): CharacterResponse = CharacterResponse(
     info,
     results.map { dto -> dto.mapDtoToDomain() }

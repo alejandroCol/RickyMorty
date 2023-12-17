@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary_color">#00C118</color>
     <color name="green_clear">#4300C118</color>
+
+    <color name="alive_status">#FFC8E6C9</color>
+    <color name="dead_status">#FFF0ADAD</color>
+    <color name="unknown_status">#FFE0E0E0</color>
 </resources>

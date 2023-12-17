@@ -1,4 +1,4 @@
-package vass.rickymorty.presentation.ui
+package vass.rickymorty.presentation.ui.screen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,6 +14,5 @@ fun LottieLoadingAnimation() {
     LottieAnimation(
         composition,
         iterations = LottieConstants.IterateForever,
-        // Puedes ajustar otros parámetros como la velocidad de la animación aquí
     )
 }

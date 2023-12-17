@@ -10,14 +10,13 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import vass.rickymorty.domain.model.SerieCharacter
 import vass.rickymorty.domain.usecase.GetCharactersUseCase
-import vass.rickymorty.presentation.ui.CharacterStatus
+import vass.rickymorty.presentation.ui.screen.CharacterStatus
 import javax.inject.Inject
 
 @HiltViewModel
 class CharacterViewModel @Inject constructor(
     private val getCharacters: GetCharactersUseCase,
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _characters: MutableStateFlow<PagingData<SerieCharacter>> =
         MutableStateFlow(value = PagingData.empty())
@@ -25,6 +24,7 @@ class CharacterViewModel @Inject constructor(
 
     private var searchQuery: String? = ""
     private var status: CharacterStatus? = null
+
     init {
         onEvent(HomeEvent.LoadCharacters)
     }
@@ -50,9 +50,7 @@ class CharacterViewModel @Inject constructor(
     }
 
     private suspend fun loadCharacters() {
-        getCharacters.invoke(searchQuery, status)
-            .distinctUntilChanged()
-            .cachedIn(viewModelScope)
+        getCharacters.invoke(searchQuery, status).distinctUntilChanged().cachedIn(viewModelScope)
             .collect {
                 _characters.value = it
             }

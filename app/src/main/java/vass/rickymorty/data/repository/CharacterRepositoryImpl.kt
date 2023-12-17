@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import vass.rickymorty.R
 import vass.rickymorty.data.mapper.mapDtoToDomain
 import vass.rickymorty.data.remote.api.RickAndMortyApiService
+import vass.rickymorty.data.remote.model.CharacterData
 import vass.rickymorty.data.remote.network.ApiResponse
 import vass.rickymorty.data.remote.network.ApiResponseHandler
 import vass.rickymorty.data.source.CharacterPagingSource
@@ -48,22 +49,29 @@ class CharacterRepositoryImpl @Inject constructor(
 
         return when (response) {
             is ApiResponse.Success -> {
-                val data = response.data
-                val character = data.mapDtoToDomain()
-                ResultRM.Success(character)
+                handleSuccessResponse(response.data)
             }
 
             is ApiResponse.ResourceNotFound -> {
-                ResultRM.Error("Character not found")
+                handleError(context.getString(R.string.searching_error_message))
             }
 
             is ApiResponse.Error -> {
-                ResultRM.Error("API error: ${response.exception.message}")
+                handleError(context.getString(R.string.network_error_message))
             }
 
             else -> {
-                ResultRM.Error("Unknown error")
+                handleError(context.getString(R.string.default_error_message))
             }
         }
+    }
+
+    private fun handleSuccessResponse(data: CharacterData): ResultRM<SerieCharacter> {
+        val character = data.mapDtoToDomain()
+        return ResultRM.success(character)
+    }
+
+    private fun handleError(errorMessage: String): ResultRM<SerieCharacter> {
+        return ResultRM.error(errorMessage)
     }
 }
