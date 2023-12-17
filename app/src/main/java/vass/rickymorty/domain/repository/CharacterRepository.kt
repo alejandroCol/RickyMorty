@@ -6,5 +6,5 @@ import vass.rickymorty.domain.model.SerieCharacter
 
 interface CharacterRepository {
     suspend fun getCharacters(search: String?, status: String?): Flow<PagingData<SerieCharacter>>
-    suspend fun getCharacterDetail(characterId: String?): SerieCharacter
+    suspend fun getCharacterDetail(characterId: String?): ResultRM<SerieCharacter>
 }

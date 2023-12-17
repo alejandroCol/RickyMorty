@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import vass.rickymorty.R
@@ -16,6 +15,7 @@ import vass.rickymorty.data.source.CharacterPagingSource
 import vass.rickymorty.data.util.Constants.MAX_PAGE_SIZE
 import vass.rickymorty.domain.model.SerieCharacter
 import vass.rickymorty.domain.repository.CharacterRepository
+import vass.rickymorty.domain.repository.ResultRM
 import javax.inject.Inject
 
 class CharacterRepositoryImpl @Inject constructor(
@@ -41,27 +41,29 @@ class CharacterRepositoryImpl @Inject constructor(
             },
         ).flow
 
-    override suspend fun getCharacterDetail(characterId: String?): SerieCharacter {
+    override suspend fun getCharacterDetail(characterId: String?): ResultRM<SerieCharacter> {
         val response = apiResponseHandler.handleApiCall {
             apiService.getCharacterDetail(characterId)
         }
 
-        when (response) {
+        return when (response) {
             is ApiResponse.Success -> {
                 val data = response.data
                 val character = data.mapDtoToDomain()
-                return character
+                ResultRM.Success(character)
             }
 
             is ApiResponse.ResourceNotFound -> {
-                return error
+                ResultRM.Error("Character not found")
             }
 
             is ApiResponse.Error -> {
-                return error
+                ResultRM.Error("API error: ${response.exception.message}")
             }
 
-            else -> return error
+            else -> {
+                ResultRM.Error("Unknown error")
+            }
         }
     }
 }

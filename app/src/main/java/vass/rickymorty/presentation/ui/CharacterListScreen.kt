@@ -283,7 +283,7 @@ fun FilterBox(text: String, isSelected: Boolean, onClick: () -> Unit) {
         Text(
             text = text,
             color = contentColor,
-            fontSize = 10.sp,
+            fontSize = 12.sp,
             textAlign = TextAlign.Center,
         )
     }

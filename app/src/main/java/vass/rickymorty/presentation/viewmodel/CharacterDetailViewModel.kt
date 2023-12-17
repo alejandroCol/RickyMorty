@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import vass.rickymorty.domain.model.SerieCharacter
+import vass.rickymorty.domain.repository.ResultRM
 import vass.rickymorty.domain.usecase.GetCharacterDetailUseCase
 import javax.inject.Inject
 
@@ -16,32 +16,20 @@ class CharacterDetailViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    private val _characterDetail = MutableStateFlow<SerieCharacter?>(null)
-    val characterDetail = _characterDetail.asStateFlow()
+    private val _characterDetailState = MutableStateFlow<CharacterDetailScreenState>(CharacterDetailScreenState.Loading)
+    val characterDetailState = _characterDetailState.asStateFlow()
 
-    private fun onEvent(event: DetailEvent) {
+    fun getCharacter(characterId: String?) {
         viewModelScope.launch {
-            when (event) {
-                is DetailEvent.LoadCharacterDetail -> {
-                    loadCharacters(event.characterId)
+            _characterDetailState.value = CharacterDetailScreenState.Loading
+            when (val result = getCharacterDetail.invoke(characterId)) {
+                is ResultRM.Success -> {
+                    _characterDetailState.value = CharacterDetailScreenState.Success(result.data)
+                }
+                is ResultRM.Error -> {
+                    _characterDetailState.value = CharacterDetailScreenState.Error(result.message)
                 }
             }
         }
     }
-
-    fun getCharacter(characterId: String?) {
-        onEvent(DetailEvent.LoadCharacterDetail(characterId))
-    }
-
-    private suspend fun loadCharacters(searchTerm: String? = "") {
-        getCharacterDetail.invoke(searchTerm).let {
-            _characterDetail.value = it
-        }
-    }
-
-    sealed class DetailEvent {
-        class LoadCharacterDetail(val characterId: String? = "") : DetailEvent()
-    }
-
-    // falta manejo de errores aqui si
 }

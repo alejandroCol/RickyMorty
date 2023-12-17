@@ -26,7 +26,7 @@ class CharacterViewModel @Inject constructor(
     private var searchQuery: String? = ""
     private var status: CharacterStatus? = null
     init {
-        onEvent(HomeEvent.LoadCharacters())
+        onEvent(HomeEvent.LoadCharacters)
     }
 
     private fun onEvent(event: HomeEvent) {
@@ -41,12 +41,12 @@ class CharacterViewModel @Inject constructor(
 
     fun searchCharacters(search: String?) {
         searchQuery = search
-        onEvent(HomeEvent.LoadCharacters())
+        onEvent(HomeEvent.LoadCharacters)
     }
 
     fun onFilterSelected(statusSelected: CharacterStatus) {
         status = statusSelected
-        onEvent(HomeEvent.LoadCharacters())
+        onEvent(HomeEvent.LoadCharacters)
     }
 
     private suspend fun loadCharacters() {
@@ -59,6 +59,6 @@ class CharacterViewModel @Inject constructor(
     }
 
     sealed class HomeEvent {
-        class LoadCharacters() : HomeEvent()
+        object LoadCharacters : HomeEvent()
     }
 }
