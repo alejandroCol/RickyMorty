@@ -6,6 +6,8 @@
 
 
 Manejo de error cuando una busqueda no da resultados
+<img src="https://github.com/alejandroCol/RickyMorty/assets/13712763/8fb7dcad-a271-4417-9d6c-11eeae23b093" width="48">
+
 ![Screenshot_2023-12-17-13-40-30-240_vass rickymorty](https://github.com/alejandroCol/RickyMorty/assets/13712763/8fb7dcad-a271-4417-9d6c-11eeae23b093)
 
 Manejo de error cuando se tiene problemas de red
