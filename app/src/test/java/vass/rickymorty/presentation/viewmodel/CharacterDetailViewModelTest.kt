@@ -11,6 +11,7 @@ import org.junit.Test
 import vass.rickymorty.domain.model.SerieCharacter
 import vass.rickymorty.domain.repository.ResultRM
 import vass.rickymorty.domain.usecase.GetCharacterDetailUseCase
+import vass.rickymorty.presentation.viewmodel.states.CharacterDetailScreenState
 import vass.rickymorty.util.MainDispatcherRule
 
 @ExperimentalCoroutinesApi

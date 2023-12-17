@@ -7,4 +7,3 @@ sealed class CharacterDetailScreenState {
     data class Success(val character: SerieCharacter?) : CharacterDetailScreenState()
     data class Error(val errorMessage: String?) : CharacterDetailScreenState()
 }
-

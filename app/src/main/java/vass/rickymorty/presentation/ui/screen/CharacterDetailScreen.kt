@@ -35,8 +35,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import vass.rickymorty.R
 import vass.rickymorty.domain.model.SerieCharacter
-import vass.rickymorty.presentation.viewmodel.CharacterDetailScreenState
 import vass.rickymorty.presentation.viewmodel.CharacterDetailViewModel
+import vass.rickymorty.presentation.viewmodel.states.CharacterDetailScreenState
 
 @Composable
 fun CharacterDetailScreen(characterId: String?) {

@@ -10,10 +10,10 @@ fun CharacterData.mapDtoToDomain(): SerieCharacter = SerieCharacter(
     name ?: "",
     image ?: "",
     species ?: "",
-    status ?: ""
+    status ?: "",
 )
 
 fun CharacterResponseData.mapDtoToDomain(): CharacterResponse = CharacterResponse(
     info,
-    results.map { dto -> dto.mapDtoToDomain() }
+    results.map { dto -> dto.mapDtoToDomain() },
 )
