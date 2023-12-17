@@ -1,30 +1,29 @@
 # RickyMorty
 
-La idea principal es mantener las responsabilidades claramente separadas entre las capas y seguir los principios de la arquitectura limpia para facilitar el mantenimiento y la escalabilidad del código.
+-La idea principal es mantener las responsabilidades claramente separadas entre las capas y seguir los principios de la arquitectura limpia para facilitar el mantenimiento y la escalabilidad del código.
 
-Se trabaja usando Jetpack Compose la totalidad el proyecto
+-Se trabaja usando Jetpack Compose la totalidad el proyecto
 
-Se uso paginación con el que manejamos la data obtenida del api teniendo en cuenta errores y loaders
+-Se uso paginación con el que manejamos la data obtenida del api teniendo en cuenta errores y loaders
 
-Se agregaron filtros para busqueda por estado del personaje+
+-Se agregaron filtros para busqueda por estado del personaje+
 
-Se agrego buscador por texto para los personajes
+-Se agrego buscador por texto para los personajes
 
-Se agrego manejo de errores en el momento de usar los datos del api
+-Se agrego manejo de errores en el momento de usar los datos del api
 
-Se agrego un splash al inicio basado en una ilustración del tema
+-Se agrego un splash al inicio basado en una ilustración del tema
 
-Se manejaron colores basados en el tema de la serie
+-Se manejaron colores basados en el tema de la serie
 
-Se agrego una animación para hacer mas interactiva la muestra de datos
+-Se agrego una animación para hacer mas interactiva la muestra de datos
 
-Se Agregan pruebas unitarias usando MockK
+-Se Agregan pruebas unitarias usando MockK
 
-Para el detalle usamos resultados enriquecidos
-
-
+-Para el detalle usamos resultados enriquecidos
 
 
+![ezgif com-resize](https://github.com/alejandroCol/RickyMorty/assets/13712763/bcb3eeaa-da3d-454e-95dc-4ea125b2139d)
 
 
 Manejo de error cuando una busqueda no da resultados <br>
